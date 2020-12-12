@@ -5,6 +5,8 @@ import java.util.List;
 import com.vj.dto.EmployeeDTO;
 
 public interface EmployeeMgmtService {
-	public List<EmployeeDTO> fetchAllEmployees();
+	public abstract List<EmployeeDTO> fetchAllEmployees();
+	public abstract String registerEmployeeData(EmployeeDTO dto);
+	public abstract String removeEmployeeById(int id);
 
 }

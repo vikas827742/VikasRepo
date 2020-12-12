@@ -35,4 +35,38 @@ public class EmployeeMgmtServiceImpl implements EmployeeMgmtService {
 		
 		return listDTO;
 	}//method
+
+	@Override
+	public String registerEmployeeData(EmployeeDTO dto) {
+		EmployeeBO bo = new EmployeeBO();
+		int count = 0;
+		String msg = null;
+		//convert dto to bo
+		BeanUtils.copyProperties(dto, bo);
+		count = dao.insertEmployeeData(bo);
+		if(count == 0) {
+			msg = "Employee data is not registered";
+		}
+		else {
+			msg = "Employee data is registered";
+		}
+		
+		return msg;
+	}//method
+
+	@Override
+	public String removeEmployeeById(int id) {
+		int count = 0;
+		String msg = null;
+		//use dao
+		count = dao.deleteEmployeeById(id);
+		if(count == 0) {
+			msg = "Employee data is not deleted";
+		}
+		else {
+			msg = "Employee data is deleted";
+		}
+		
+		return msg;
+	}//method
 }//class

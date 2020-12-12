@@ -45,3 +45,24 @@
     <h1 style="color: blue;text-align: center">Records are not found......!!</h1>
   </c:otherwise>
 </c:choose>
+
+
+<br><br><br>
+
+<c:if test="${resultMsg ne null && !empty resultMsg }">
+  <marquee dir="rtl"><h1 style="color: blue;text-align: center">${resultMsg }</h1></marquee>
+</c:if>
+
+<center> <h2><a href="saveEmp.htm"><img src="images/add.jpg" width="50" height="50"/></a> 
+    &nbsp; &nbsp;<a href="welcome.htm"><img src="images/home.gif" width="50" height="50"/></a>
+    &nbsp; &nbsp;<a  href="JavaScript:doPrint()"><img src="images/print.jpg" width="50" height="50"></a>
+</h2> </center>
+
+
+
+<script lang="JavaScript">
+  function doPrint(){
+	  frames.focus();
+	  frames.print();
+  }
+</script>

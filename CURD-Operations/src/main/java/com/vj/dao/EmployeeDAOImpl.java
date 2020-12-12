@@ -16,6 +16,8 @@ import com.vj.bo.EmployeeBO;
 @Repository("empDAO")
 public class EmployeeDAOImpl implements EmployeeDAO {
 	private static final String GET_ALL_EMPLOYEES = "SELECT EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO FROM EMP";
+	private static final String INSERT_EMPLOYEE_DATA = "INSERT INTO EMP(EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) VALUES(?,?,?,?,?,?,?,?)";
+	private static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM EMP WHERE EMPNO=?";
 	
 	@Autowired
 	private  JdbcTemplate jt;
@@ -50,4 +52,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			return listBO;
 		}//innerclassmethod
 	}//innerclass
+
+	@Override
+	public int insertEmployeeData(EmployeeBO bo) {
+		int count = 0;
+		count = jt.update(INSERT_EMPLOYEE_DATA, bo.getEmpNo(),
+				                                                                       bo.getEmpName(),
+				                                                                       bo.getJob(),
+				                                                                       bo.getMgr(),
+				                                                                       bo.getHireDate(),
+				                                                                       bo.getSal(),
+				                                                                       bo.getComm(),
+				                                                                       bo.getDeptNo());
+		
+		return count;
+	}
+
+	@Override
+	public int deleteEmployeeById(int id) {
+		int count = 0;
+		count = jt.update(DELETE_EMPLOYEE_BY_ID, id);
+		
+		return count;
+	}//method
 }//outerclass
