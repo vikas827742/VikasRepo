@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.vj.dto.EmployeeDTO;
 import com.vj.model.EmployeeModel;
 import com.vj.service.EmployeeMgmtService;
+import com.vj.validator.EmployeeValidator;
 
 @Controller
 public class EmployeeController {
 	@Autowired
 	private EmployeeMgmtService service;
+	@Autowired
+	private EmployeeValidator validator;
     
 	@GetMapping("/welcome.htm")
 	public String showHome() {
@@ -52,6 +58,22 @@ public class EmployeeController {
 		System.out.println("EmployeeController.saveEmployeeData()");
 		EmployeeDTO dto = null;
 		String result = null;
+		
+		System.out.println("vflag ::"+model.getVflag());
+		if(model.getVflag().equalsIgnoreCase("no")) {  //enable server side form validations only when client form   validations are not done
+		   //peform form validations
+		   if(validator.supports(model.getClass()))
+			    validator.validate(model, error);
+		}
+		
+		// b.logic errors or application logic errors
+		if (model.getJob().equalsIgnoreCase("netaji") || model.getJob().equalsIgnoreCase("actor"))
+			error.rejectValue("job", "blocked.jobs");
+
+		// if form validation errors are there.. launch form page
+		if (error.hasErrors())
+			return "employee_register";
+
 		//convert to model data to dto
 		dto = new EmployeeDTO();
 		BeanUtils.copyProperties(model, dto);
@@ -64,13 +86,64 @@ public class EmployeeController {
 	}//method
 	
 	@GetMapping("/deleteEmp.htm")
-	public String removeEmployeeData(RedirectAttributes redirect,@RequestParam int empNo) {
+	public String removeEmployeeData(RedirectAttributes redirect,@RequestParam int eno) {
 		String result = null;
 		//use service
-		result = service.removeEmployeeById(empNo);
+		result = service.removeEmployeeById(eno);
 		//add result to flash attribute
 		redirect.addFlashAttribute("resultMsg", result);
 		
 		return "redirect:list_emps.htm";
+	}//method
+	
+	@GetMapping("/editEmp.htm")
+	public String showEditForm(@ModelAttribute("empForm") EmployeeModel model,@RequestParam int empNo) {
+		EmployeeDTO dto=null;
+		//use service
+		dto=service.fetchEmployeeById(empNo);
+		//convert dto to model
+		 BeanUtils.copyProperties(dto, model);
+		
+		return "employee_edit";
 	}
+	
+	@PostMapping("/editEmp.htm")
+	public String updateEmployee(RedirectAttributes redirect,@ModelAttribute("empForm") EmployeeModel model,BindingResult error) {
+		System.out.println(model.toString());
+		EmployeeDTO dto = null;
+		String result = null;
+		
+		System.out.println("vflag ::"+model.getVflag());
+		if(model.getVflag().equalsIgnoreCase("no")) {  //enable server side form validations only when client form   validations are not done
+		   //peform form validations
+		   if(validator.supports(model.getClass()))
+			    validator.validate(model, error);
+		}
+		
+		// b.logic errors or application logic errors
+		if (model.getJob().equalsIgnoreCase("netaji") || model.getJob().equalsIgnoreCase("actor"))
+			error.rejectValue("job", "blocked.jobs");
+
+		// if form validation errors are there.. launch form page
+		if (error.hasErrors())
+			return "employee_edit";
+
+		//convert to model data to dto
+		dto = new EmployeeDTO();
+		BeanUtils.copyProperties(model, dto);
+		/*dto.setEmpNo(model.getEmpNo());
+		dto.setEname(model.getEname());
+		dto.setJob(model.getJob());
+		dto.setMgr(model.getMgr());
+		dto.setHireDate(model.getHireDate());
+		dto.setSal(model.getSal());
+		dto.setComm(model.getComm());
+		dto.setDeptNo(model.getDeptNo());*/
+		//use service
+		result = service.modifyEmployeeByNo(dto);
+		//keep in results in flash attribute (Special map object)
+		redirect.addFlashAttribute("resultMsg", result);
+		
+		return "redirect:list_emps.htm";
+	}//method
 }//class

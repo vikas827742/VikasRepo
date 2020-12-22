@@ -1,15 +1,15 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<h1 style="color: red;text-align: center;">Employee Registration Form</h1>
+<h1 style="color: blue;text-align: center;">Employee Editing Page</h1>
 
-<script language="JavaScript" src="js/validation.js">
+<script lang="JavaScript" src="js/validation.js">
 </script>
 
-<form:form modelAttribute="empForm" onsubmit="return validate(this)">
-  <table border="1" bgcolor="cyan" align="center">
+<form:form action="editEmp.htm" modelAttribute="empForm" onsubmit="return validate(this)">
+  <table border="1" bgcolor="pink" align="center">
     <tr>
       <td>Employee No ::</td>
-      <td><form:input path="empNo"/><form:errors path="empNo"/><span id="empNoId"></span></td>
+      <td><form:input path="empNo" readonly="true"/><form:errors path="empNo"/><span id="empNoId"></span></td>
     </tr>
     <tr>
       <td>Employee Name ::</td>
@@ -41,7 +41,7 @@
     </tr>
     <tr>
       <td><form:hidden path="vflag"/></td>
-      <td><input type="submit" value="Register"/></td>
+      <td><input type="submit" value="Update Employee"/></td>
     </tr>
   </table>
 </form:form>

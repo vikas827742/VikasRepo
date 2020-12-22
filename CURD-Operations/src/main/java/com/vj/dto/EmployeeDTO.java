@@ -9,7 +9,7 @@ import lombok.Data;
 public class EmployeeDTO implements Serializable {
 	private Integer serialNo;
 	private Integer empNo;
-	private String empName;
+	private String ename;
 	private String job;
 	private Integer mgr;
 	private Date hireDate;

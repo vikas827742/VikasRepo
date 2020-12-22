@@ -69,4 +69,39 @@ public class EmployeeMgmtServiceImpl implements EmployeeMgmtService {
 		
 		return msg;
 	}//method
+
+	@Override
+	public String modifyEmployeeByNo(EmployeeDTO dto) {
+		int count = 0;
+		String msg = null;
+		EmployeeBO bo = null;
+		//create obj
+		bo = new EmployeeBO();
+		//copy
+		BeanUtils.copyProperties(dto, bo);
+		//use dao
+		count = dao.updateEmployee(bo);
+		if(count==0) {
+			msg = "Employee data is not updated";
+		}
+		else {
+			msg = "Employee data is updated";
+		}
+		
+		return msg;
+	}//method
+
+	@Override
+	public EmployeeDTO fetchEmployeeById(int id) {
+		EmployeeDTO dto=null;
+		EmployeeBO bo=null;
+	    //use DAO
+		bo=dao.getEmployeeById(id);
+		System.out.println(bo);
+		// convert bo  to dto
+		dto=new EmployeeDTO();
+		BeanUtils.copyProperties(bo, dto);
+		
+		return dto;
+	}//method
 }//class

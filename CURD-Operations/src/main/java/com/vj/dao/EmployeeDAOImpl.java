@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private static final String GET_ALL_EMPLOYEES = "SELECT EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO FROM EMP";
 	private static final String INSERT_EMPLOYEE_DATA = "INSERT INTO EMP(EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) VALUES(?,?,?,?,?,?,?,?)";
 	private static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM EMP WHERE EMPNO=?";
+	private static final String UPDATE_EMPLOYEE_BY_ID = "UPDATE EMP SET ENAME=?,JOB=?,MGR=?,HIREDATE=?,SAL=?,COMM=?,DEPTNO=? WHERE EMPNO=?";
+	private static final String GET_EMPLOYEE_DATA_BY_ID = "SELECT EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO FROM EMP WHERE EMPNO=?";
 	
 	@Autowired
 	private  JdbcTemplate jt;
@@ -39,7 +42,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while(rs.next()) {
 				EmployeeBO bo = new EmployeeBO();
 				bo.setEmpNo(rs.getInt(1));
-				bo.setEmpName(rs.getString(2));
+				bo.setEname(rs.getString(2));
 				bo.setJob(rs.getString(3));
 				bo.setMgr(rs.getInt(4));
 				bo.setHireDate(rs.getDate(5));
@@ -57,7 +60,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public int insertEmployeeData(EmployeeBO bo) {
 		int count = 0;
 		count = jt.update(INSERT_EMPLOYEE_DATA, bo.getEmpNo(),
-				                                                                       bo.getEmpName(),
+				                                                                       bo.getEname(),
 				                                                                       bo.getJob(),
 				                                                                       bo.getMgr(),
 				                                                                       bo.getHireDate(),
@@ -75,4 +78,32 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		return count;
 	}//method
+
+	@Override
+	public int updateEmployee(EmployeeBO bo) {
+		System.out.println(bo);
+		int count = 0;
+		count = jt.update(UPDATE_EMPLOYEE_BY_ID, bo.getEname(),
+				                                                                          bo.getJob(),
+				                                                                          bo.getMgr(),
+				                                                                          bo.getHireDate(),
+				                                                                          bo.getSal(),
+				                                                                          bo.getComm(),
+				                                                                          bo.getDeptNo(),
+				                                                                          bo.getEmpNo());
+		
+		return count;
+	}//method
+
+	@Override
+	public EmployeeBO getEmployeeById(int id) {
+		EmployeeBO bo = null;
+		//jt
+		//using  Readymade impl class of RowMapper that is  BeanPropertyRowMapper 
+        //(here cols names  BO class property names must match)
+		bo = jt.queryForObject(GET_EMPLOYEE_DATA_BY_ID, new BeanPropertyRowMapper<EmployeeBO>(EmployeeBO.class),id);
+		//bo = jt.queryForObject(GET_EMPLOYEE_DATA_BY_ID,new Object[]{id},BeanPropertyRowMapper.newInstance(EmployeeBO.class));
+		
+		return bo;
+	}
 }//outerclass

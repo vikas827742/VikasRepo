@@ -24,7 +24,7 @@
         <tr>
           <td>${dto.serialNo }</td>
           <td>${dto.empNo }</td>
-          <td>${dto.empName }</td>
+          <td>${dto.ename }</td>
           <td>${dto.job }</td>
           <td>${dto.mgr }</td>
           <td>${dto.hireDate }</td>
@@ -35,7 +35,7 @@
           <td>${dto.netSal }</td>
           <td>
             <a href="editEmp.htm?empNo=${dto.empNo }"><img src="images/edit.png" width="50" height="50" border="1"/></a>
-            <a href="deleteEmp.htm?empNo=${dto.empNo }" onclick="CONFIRM('are you sure to delete ${dto.empName}')"><img src="images/delete.jpg" width="50" height="50" border="1"/></a>
+            <a href="deleteEmp.htm?eno=${dto.empNo }" onclick="confirm('are you sure to delete ${dto.ename}')"><img src="images/delete.jpg" width="50" height="50" border="1"/></a>
           </td>        
         </tr>
       </c:forEach>          
@@ -50,7 +50,7 @@
 <br><br><br>
 
 <c:if test="${resultMsg ne null && !empty resultMsg }">
-  <marquee dir="rtl"><h1 style="color: blue;text-align: center">${resultMsg }</h1></marquee>
+  <marquee direction="right"><h1 style="color: blue;text-align: center">${resultMsg }</h1></marquee>
 </c:if>
 
 <center> <h2><a href="saveEmp.htm"><img src="images/add.jpg" width="50" height="50"/></a> 
