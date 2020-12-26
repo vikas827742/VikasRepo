@@ -146,4 +146,11 @@ public class EmployeeController {
 		
 		return "redirect:list_emps.htm";
 	}//method
+	
+	@ModelAttribute("deptInfo")  //constructing reference data/initial for select box
+	public List<Integer>  populateDeptNos(){
+		System.out.println("EmployeeController.populateDeptNos()");
+		//use service
+			return service.fetchAllDeptNos();
+	}
 }//class

@@ -10,5 +10,6 @@ public interface EmployeeDAO {
 	public abstract int deleteEmployeeById(int id);
 	public abstract int updateEmployee(EmployeeBO bo);
 	public abstract EmployeeBO getEmployeeById(int id);
+	public abstract List<Integer> getAllDeptNos();
 
 }

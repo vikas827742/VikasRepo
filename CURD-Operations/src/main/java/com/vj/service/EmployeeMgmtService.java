@@ -10,5 +10,6 @@ public interface EmployeeMgmtService {
 	public abstract String removeEmployeeById(int id);
 	public abstract String modifyEmployeeByNo(EmployeeDTO dto);
 	public abstract EmployeeDTO fetchEmployeeById(int id);
+	public abstract List<Integer> fetchAllDeptNos();
 
 }

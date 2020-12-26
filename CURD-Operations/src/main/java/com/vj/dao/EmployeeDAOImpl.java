@@ -1,9 +1,11 @@
 package com.vj.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +23,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM EMP WHERE EMPNO=?";
 	private static final String UPDATE_EMPLOYEE_BY_ID = "UPDATE EMP SET ENAME=?,JOB=?,MGR=?,HIREDATE=?,SAL=?,COMM=?,DEPTNO=? WHERE EMPNO=?";
 	private static final String GET_EMPLOYEE_DATA_BY_ID = "SELECT EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO FROM EMP WHERE EMPNO=?";
+	private static final String GET_ALL_DEPTNOS = "SELECT DISTINCT DEPTNO FROM EMP  WHERE DEPTNO IS NOT NULL";
 	
 	@Autowired
 	private  JdbcTemplate jt;
@@ -106,4 +109,17 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		return bo;
 	}
+
+	@Override
+	public List<Integer> getAllDeptNos() {
+		List<Integer> deptNosList=new ArrayList();
+		List<Map<String, Object>> listMap=null;
+	    //exdcute query
+		listMap=jt.queryForList(GET_ALL_DEPTNOS);
+		//listMap.forEach(System.out::println);
+		listMap.forEach(e->{
+			deptNosList.add((Integer) ((BigDecimal)e.get("deptNo")).intValue());
+		});
+		return deptNosList;
+	}//method
 }//outerclass

@@ -104,4 +104,10 @@ public class EmployeeMgmtServiceImpl implements EmployeeMgmtService {
 		
 		return dto;
 	}//method
+
+	@Override
+	public List<Integer> fetchAllDeptNos() {
+		
+		return dao.getAllDeptNos();
+	}//method
 }//class

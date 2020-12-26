@@ -37,7 +37,10 @@
     </tr>
     <tr>
       <td>Employee DeptNo ::</td>
-      <td><form:input path="deptNo"/><form:errors path="deptNo"/><span id="deptNoId"></span></td>
+      <td><form:select path="deptNo">
+                <form:options items="${deptInfo }"/>
+              </form:select>
+      </td>
     </tr>
     <tr>
       <td><form:hidden path="vflag"/></td>
@@ -45,3 +48,6 @@
     </tr>
   </table>
 </form:form>
+
+
+<center><a href="welcome.htm"><img src="images/home.gif" width="50" height="50"/></a></center>
